@@ -1,8 +1,6 @@
 <template>
   <li v-for="item in employee">
-    <p v-if="item.bossid == 0 || hasSubordinates(item.id)">
       {{ item.name }}
-    </p>
     <ul v-if="hasSubordinates(item.id)">
       <UsersTree
         v-for="subordinate in getSubordinates(item.id)"
