@@ -4,6 +4,7 @@
     <form @submit.prevent v-if="HandleShowForm">
       <label>Type your full name: </label>
       <vue-dadata
+        class="error-borders"
         v-model="dadata"
         placeholder="Djon Doe"
         debounceWait="100ms"
@@ -19,30 +20,57 @@
       <button type="button" @click="HandleShowMap = !HandleShowMap">
         {{ !HandleShowMap ? 'Show map' : 'Hide map' }}
       </button>
-      <div class="hide-YM-map" v-if="HandleShowMap">
+      <div class="hide-YM-map" :class="{ 'hidden-YM-map': !HandleShowMap }">
         <YM />
       </div>
+      <label for="">Who is your boss?</label>
+      <select name="" id="" v-for="user in store.$state.firebaseUsers">
+        <option value="">{{ user.name }}</option>
+        <option value="">No one</option>
+      </select>
+      <button @click="addUser()" class="submButt">Add User</button>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useField } from 'vee-validate'
 import { VueDadata } from 'vue-dadata'
 import YM from '@/components/YM.vue'
 import 'vue-dadata/dist/style.css'
-
+import { Store } from '@/stores/dbPinia'
+import quickdealFIRESTORE from '@/firebase/config'
+import {
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  getDoc,
+  deleteDoc,
+  getDocs,
+  updateDoc
+} from 'firebase/firestore'
+let store = Store()
 let props = defineProps({
   age: {
     type: String,
     required: true
   }
 })
-
+interface Employee {
+  age: number
+  bossid: number
+  geoLat: number
+  geoLong: number
+  id: number
+  name: string
+}
 let HandleShowForm = ref(false)
 let HandleShowMap = ref(false)
 let dadata = ref('')
+let bossid = ref(0)
+let currentID = 0
 let CheckAge = (value: number) => {
   if (Number.isInteger(value) && value >= 18) {
     return true
@@ -53,6 +81,35 @@ let CheckAge = (value: number) => {
   return 'You are not old enough'
 }
 let { errorMessage, value } = useField(() => props.age, CheckAge)
+let loadUsers = async () => {
+  let querySnapshot = await getDocs(collection(quickdealFIRESTORE, 'parttwo'))
+  querySnapshot.forEach((doc) => {
+    store.$state.firebaseUsers = doc.data().AllUsers
+    currentID = doc.data().idCounter
+  })
+}
+let addUser = async () => {
+  if (store.$state.ymCoords) {
+    let user: Employee = {
+      age: value.value,
+      bossid: bossid.value,
+      geoLat: store.$state.ymCoords[0],
+      geoLong: store.$state.ymCoords[1],
+      id: currentID,
+      name: dadata.value
+    }
+    let UserRef = doc(quickdealFIRESTORE, 'parttwo', 'Users')
+    let userDoc = await getDoc(UserRef)
+    let currentAllUsers = userDoc.data()?.AllUsers || []
+    await updateDoc(UserRef, {
+      AllUsers: [user, ...currentAllUsers],
+      idCounter: (currentID += 1)
+    })
+  }
+}
+onMounted(() => {
+  loadUsers()
+})
 </script>
 
 <style scoped>
@@ -114,15 +171,20 @@ button {
 }
 .hide-YM-map {
   overflow: hidden;
-  animation: slit-in-vertical 0.45s ease-out both !important;
+  transition: height 0.45s ease-out;
+  height: 300px;
 }
-
-@keyframes slit-in-vertical {
-  0% {
-    height: 0px;
-  }
-  100% {
-    height: 300px;
-  }
+.hidden-YM-map {
+  height: 0px;
+}
+.submButt {
+  margin-top: 20px;
+  background-color: aquamarine;
+  font-weight: 700;
+  font-size: 1.1em;
+}
+.error-borders {
+  border: 1px red solid;
+  border-radius: 10px;
 }
 </style>

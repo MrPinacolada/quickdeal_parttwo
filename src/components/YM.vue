@@ -19,19 +19,14 @@ const init = () => {
       }
     )
 
-  // Listening for a click on the map
   myMap.events.add('click', function (e: any) {
     let coords = e.get('coords')
-
-    // Moving the placemark if it was already created
+    store.$state.ymCoords = coords
     if (myPlacemark) {
       myPlacemark.geometry.setCoordinates(coords)
-    }
-    // Otherwise, creating it.
-    else {
+    } else {
       myPlacemark = createPlacemark(coords)
       myMap.geoObjects.add(myPlacemark)
-      // Listening for the dragging end event on the placemark.
       myPlacemark.events.add('dragend', function () {
         getAddress(myPlacemark.geometry.getCoordinates())
       })
@@ -39,7 +34,6 @@ const init = () => {
     getAddress(coords)
   })
 
-  // Creating a placemark
   function createPlacemark(coords: any) {
     return new (window as any).ymaps.Placemark(
       coords,

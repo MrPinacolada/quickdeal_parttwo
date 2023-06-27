@@ -7,9 +7,8 @@ let store = Store()
 onMounted(() => {
   store.$state.ymScript = document.createElement('script')
   store.$state.ymScript.src =
-    'https://api-maps.yandex.ru/2.1/?apikey=4fed172d-6fbb-4890-bd6b-17082df5c586&lang=ru_RU'
+    'https://api-maps.yandex.ru/2.1/?apikey=7987e2d8-ac2d-4b86-b0bd-b355c982ed1a&lang=ru_RU'
   store.$state.ymScript.type = 'text/javascript'
-
   document.head.appendChild(store.$state.ymScript)
 })
 onBeforeUnmount(() => {
