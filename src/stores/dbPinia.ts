@@ -5,6 +5,7 @@ export const Store = defineStore('DefStore', () => {
   return {
     ymScript: null as HTMLScriptElement | null,
     ymCoords:null,
-    firebaseUsers:null as any
+    firebaseUsers:null as any,
+    currentFirestoreID: 0
   }
 })

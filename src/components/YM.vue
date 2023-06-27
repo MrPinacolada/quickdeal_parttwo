@@ -49,7 +49,7 @@ const init = () => {
 
   // Determining the address by coordinates (reverse geocoding).
   function getAddress(coords: any) {
-    myPlacemark.properties.set('iconCaption', 'searching...')
+    myPlacemark.properties.set('iconCaption', coords)
     ;(window as any).ymaps.geocode(coords).then(function (res: any) {
       let firstGeoObject = res.geoObjects.get(0)
 

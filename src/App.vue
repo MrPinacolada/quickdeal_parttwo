@@ -2,8 +2,20 @@
 import { RouterLink, RouterView } from 'vue-router'
 import 'animate.css'
 import { Store } from '@/stores/dbPinia'
-import { onBeforeUnmount, onMounted } from 'vue'
+import { onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
+import quickdealFIRESTORE from '@/firebase/config'
+import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore'
 let store = Store()
+onBeforeMount(() => {
+  let loadUsers = async () => {
+    let querySnapshot = await getDocs(collection(quickdealFIRESTORE, 'parttwo'))
+    querySnapshot.forEach((doc) => {
+      store.$state.firebaseUsers = doc.data().AllUsers
+      store.$state.currentFirestoreID = doc.data().idCounter
+    })
+  }
+  loadUsers()
+})
 onMounted(() => {
   store.$state.ymScript = document.createElement('script')
   store.$state.ymScript.src =

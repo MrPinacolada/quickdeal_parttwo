@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import MajorView from '@/views/MajorView.vue'
+import UserList from '@/views/UsersList.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: MajorView
+    },
+    {
+      path: '/list',
+      name: 'UserList',
+      component: UserList
     }
   ]
 })
