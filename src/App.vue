@@ -7,14 +7,7 @@ import quickdealFIRESTORE from '@/firebase/config'
 import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore'
 let store = Store()
 onBeforeMount(() => {
-  let loadUsers = async () => {
-    let querySnapshot = await getDocs(collection(quickdealFIRESTORE, 'parttwo'))
-    querySnapshot.forEach((doc) => {
-      store.$state.firebaseUsers = doc.data().AllUsers
-      store.$state.currentFirestoreID = doc.data().idCounter
-    })
-  }
-  loadUsers()
+  store.getUsers()
 })
 onMounted(() => {
   store.$state.ymScript = document.createElement('script')
