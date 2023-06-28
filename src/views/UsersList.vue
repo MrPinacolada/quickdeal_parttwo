@@ -30,6 +30,10 @@
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { Store } from '@/stores/dbPinia'
 let store = Store()
+let data = ref([] as any)
+let modal = ref(false)
+let currentIndex = ref(0)
+let YMmap: any
 let columns = [
   {
     title: 'Name',
@@ -50,10 +54,6 @@ let columns = [
   }
 ]
 
-const data = ref([] as any)
-let modal = ref(false)
-let currentIndex = ref(0)
-let YMmap: any
 const ShowModal = (data: Object, index: any) => {
   if (YMmap) {
     YMmap.destroy()
@@ -64,7 +64,8 @@ const ShowModal = (data: Object, index: any) => {
     ;(window as any).ymaps.ready(() => init(data))
   })
 }
-let users = computed(() => store.$state.firebaseUsers)
+
+const users = computed(() => store.$state.firebaseUsers)
 const buildTree = (user: any) => {
   let children = users.value.filter((u: any) => u.bossid === user.id)
   if (children.length > 0) {
@@ -76,18 +77,22 @@ const buildTree = (user: any) => {
     age: user.age,
     long: user.geoLong,
     lat: user.geoLat,
-    children: user.children || []
+    children: user.children || [],
+    _showChildren: true
   }
 }
+
 const treeArray = () => {
   const rootUsers = users.value.filter((user: any) => user.bossid === 0)
   const tree = rootUsers.map((rootUser: any) => buildTree(rootUser))
   data.value = data.value.concat(tree)
 }
+
 const getUsers = async () => {
   await store.getUsers()
   treeArray()
 }
+
 const init = (data: any) => {
   YMmap = new (window as any).ymaps.Map(
     `mapYMforEach_${currentIndex.value}`,
@@ -123,7 +128,6 @@ onMounted(() => {
 
 <style scoped>
 .list-container {
-  height: 100vh;
   padding: 50px;
   display: grid;
   align-items: center;
