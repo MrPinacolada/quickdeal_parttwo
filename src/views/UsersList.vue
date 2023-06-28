@@ -12,6 +12,17 @@
         <div class="ymMap" :id="`mapYMforEach_${currentIndex}`"></div>
       </div>
     </Modal>
+    <RouterLink :to="{ name: 'home' }">
+      <h3 style="text-align: center">go back</h3>
+      <lottie-player
+        src="https://assets2.lottiefiles.com/packages/lf20_wsyyln4p.json"
+        background="transparent"
+        speed="1"
+        style="width: 300px; height: 300px"
+        loop
+        autoplay
+      ></lottie-player>
+    </RouterLink>
   </div>
 </template>
 
@@ -23,11 +34,13 @@ let columns = [
   {
     title: 'Name',
     key: 'name',
-    tree: true
+    tree: true,
+    sortable: true
   },
   {
     title: 'Age',
-    key: 'age'
+    key: 'age',
+    sortable: true
   },
   {
     title: 'Action',

@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { Store } from '@/stores/dbPinia'
 let store = Store()
 const init = () => {

@@ -1,4 +1,3 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import quickdealFIRESTORE from '@/firebase/config'
 import { collection, getDocs } from 'firebase/firestore'
@@ -9,7 +8,6 @@ interface DefStoreState {
   firebaseUsers: any
   currentFirestoreID: number
 }
-
 export const Store = defineStore('DefStore', {
   state: (): DefStoreState => ({
     ymScript: null,

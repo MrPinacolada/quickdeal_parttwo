@@ -74,15 +74,12 @@
     </RouterLink>
   </div>
 </template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { VueDadata } from 'vue-dadata'
 import 'vue-dadata/dist/style.css'
 import YM from '@/components/YM.vue'
-import Schema from 'async-validator'
 import { Store } from '@/stores/dbPinia'
 import quickdealFIRESTORE from '@/firebase/config'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
