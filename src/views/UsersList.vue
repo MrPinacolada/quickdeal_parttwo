@@ -99,22 +99,22 @@ const init = (data: any) => {
       searchControlProvider: 'yandex#search'
     }
   )
-  ;(window as any).ymaps
-    .geocode([data.lat, data.long], {
-      results: 1
-    })
-    .then(function (res: any) {
-      console.log(res)
-      let firstGeoObject = res.geoObjects.get(0),
-        coords = firstGeoObject.geometry.getCoordinates(),
-        bounds = firstGeoObject.properties.get('boundedBy')
-      firstGeoObject.options.set('preset', 'islands#darkBlueDotIconWithCaption')
-      firstGeoObject.properties.set('iconCaption', firstGeoObject.getAddressLine())
-      YMmap.value?.geoObjects.add(firstGeoObject)
-      YMmap.value?.setBounds(bounds, {
-        checkZoomRange: true
-      })
-    })
+  let myGeoObject = new (window as any).ymaps.GeoObject(
+    {
+      geometry: {
+        type: 'Point',
+        coordinates: [data.lat, data.long]
+      },
+      properties: {
+        iconContent: 'I live here',
+        hintContent: 'Right here1'
+      }
+    },
+    {
+      preset: 'islands#blackStretchyIcon'
+    }
+  )
+  YMmap.geoObjects.add(myGeoObject)
 }
 onMounted(() => {
   getUsers()
