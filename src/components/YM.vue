@@ -47,25 +47,20 @@ const init = () => {
     )
   }
 
-  // Determining the address by coordinates (reverse geocoding).
   function getAddress(coords: any) {
     myPlacemark.properties.set('iconCaption', coords)
     ;(window as any).ymaps.geocode(coords).then(function (res: any) {
       let firstGeoObject = res.geoObjects.get(0)
 
       myPlacemark.properties.set({
-        // Forming a string with the object's data.
         iconCaption: [
-          // The name of the municipality or the higher territorial-administrative formation.
           firstGeoObject.getLocalities().length
             ? firstGeoObject.getLocalities()
             : firstGeoObject.getAdministrativeAreas(),
-          // Getting the path to the toponym; if the method returns null, then requesting the name of the building.
           firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
         ]
           .filter(Boolean)
           .join(', '),
-        // Specifying a string with the address of the object as the balloon content.
         balloonContent: firstGeoObject.getAddressLine()
       })
     })

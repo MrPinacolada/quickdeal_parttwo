@@ -61,8 +61,18 @@
         <Button type="primary" @click="addUser()">Submit</Button>
       </FormItem>
     </Form>
+    <RouterLink :to="{ name: 'UserList' }">
+      <h3 style="text-align: center">or go to worker list</h3>
+      <lottie-player
+        src="https://assets2.lottiefiles.com/packages/lf20_wsyyln4p.json"
+        background="transparent"
+        speed="1"
+        style="width: 300px; height: 300px"
+        loop
+        autoplay
+      ></lottie-player>
+    </RouterLink>
   </div>
-  <RouterLink :to="{ name: 'UserList' }">aaaaaaaaaaaaaaaaaaa</RouterLink>
 </template>
 
 <script setup lang="ts">

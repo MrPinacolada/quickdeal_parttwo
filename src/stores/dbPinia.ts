@@ -4,10 +4,10 @@ import quickdealFIRESTORE from '@/firebase/config'
 import { collection, getDocs } from 'firebase/firestore'
 
 interface DefStoreState {
-  ymScript: HTMLScriptElement | null;
-  ymCoords: any;
-  firebaseUsers: any;
-  currentFirestoreID: number;
+  ymScript: HTMLScriptElement | null
+  ymCoords: any
+  firebaseUsers: any
+  currentFirestoreID: number
 }
 
 export const Store = defineStore('DefStore', {
@@ -15,7 +15,7 @@ export const Store = defineStore('DefStore', {
     ymScript: null,
     ymCoords: null,
     firebaseUsers: null,
-    currentFirestoreID: 0,
+    currentFirestoreID: 0
   }),
   actions: {
     async getUsers() {
@@ -24,6 +24,6 @@ export const Store = defineStore('DefStore', {
         this.firebaseUsers = doc.data().AllUsers
         this.currentFirestoreID = doc.data().idCounter
       })
-    },
-  },
+    }
+  }
 })
